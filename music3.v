@@ -31,7 +31,7 @@ reg rot_left = 0;
 input clk;
 input song_sel;
 output [6:0]led; 
-input type;//Ä£Ê½¿ØÖÆ
+input type;//æ¨¡å¼æ§åˆ¶
 reg speaker;
 output speakers;
 output [7:0]light_9;
@@ -47,17 +47,17 @@ always@(posedge clk)
 			end
 		else p<=p+1;
 	end	
-reg[2:0] code;//¼òÆ×Âë0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢6¡¢7
-reg[6:0] led;//Ö¸Ê¾0,1,2,3,4,5,6,7
-reg[4:0] note;//ÀÖÇúÇúÆ×ÖĞµÄÒô·ûÊä³ö£º0~21
+reg[2:0] code;//ç®€è°±ç 0ã€1ã€2ã€3ã€4ã€5ã€6ã€7
+reg[6:0] led;//æŒ‡ç¤º0,1,2,3,4,5,6,7
+reg[4:0] note;//ä¹æ›²æ›²è°±ä¸­çš„éŸ³ç¬¦è¾“å‡ºï¼š0~21
 reg [1069:0]buf_music1;
 		reg [639:0]buf_music2;
 		parameter s0=1'b0,s1=1'b1;
 		reg state1,state2;
-		reg [9:0]cnt;//¼ÆÊıÆ÷µÄÎ»ÊıÓÉ´æ·ÅÒôÀÖµÄ³¤¶È¾ö¶¨
-//½«ÕûÊ×ÀÖÇú¼ÇÂ¼ÔÚÒ»¸ö²ÎÊıÀï£ºÃ¿¸öÒô·ûÓÃ{¸ßÖĞµÍÒô£¬¼òÆ×Âë}±íÊ¾
-//2Î»¸ßÖĞµÍÒô£º00±íÊ¾µÍÒô£¬01±íÊ¾ÖĞÒô£¬10±íÊ¾¸ßÒô
-//3Î»¼òÆ×Âë¶ÔÓ¦£º0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢6¡¢7
+		reg [9:0]cnt;//è®¡æ•°å™¨çš„ä½æ•°ç”±å­˜æ”¾éŸ³ä¹çš„é•¿åº¦å†³å®š
+//å°†æ•´é¦–ä¹æ›²è®°å½•åœ¨ä¸€ä¸ªå‚æ•°é‡Œï¼šæ¯ä¸ªéŸ³ç¬¦ç”¨{é«˜ä¸­ä½éŸ³ï¼Œç®€è°±ç }è¡¨ç¤º
+//2ä½é«˜ä¸­ä½éŸ³ï¼š00è¡¨ç¤ºä½éŸ³ï¼Œ01è¡¨ç¤ºä¸­éŸ³ï¼Œ10è¡¨ç¤ºé«˜éŸ³
+//3ä½ç®€è°±ç å¯¹åº”ï¼š0ã€1ã€2ã€3ã€4ã€5ã€6ã€7
 parameter music1={{2'b01,3'd7},{2'b01,3'd7},{2'b01,3'd6},{2'b01,3'd6},{2'b01,3'd7},{2'b01,3'd7},
 {2'b01,3'd5},{2'b01,3'd5},{2'b01,3'd5},{2'b01,3'd6},{2'b01,3'd4},{2'b01,3'd4},{2'b01,3'd3},{2'b01,3'd3},
 {2'b01,3'd2},{2'b01,3'd3},{2'b01,3'd4},{2'b01,3'd3},{2'b01,3'd5},{2'b01,3'd5},{2'b01,3'd5},{2'b01,3'd3},
@@ -185,7 +185,7 @@ end
 always @(posedge clk_8Hz)
 	begin
 		
-		if(song_sel)//¶àÊ×Çú×Ó¸ù¾İ°´¼ü½øĞĞÑ¡Ôñ
+		if(song_sel)//å¤šé¦–æ›²å­æ ¹æ®æŒ‰é”®è¿›è¡Œé€‰æ‹©
 			begin
 						case(state1)
 								s0:begin 
@@ -193,7 +193,7 @@ always @(posedge clk_8Hz)
 										state1<=s1;
 										cnt<=0;
 									end
-								s1:if(cnt==(1070/5-1))
+								s1:if(cnt==(1070/5-1))//ä¹æ›²å•æ›²å¾ªç¯
 											begin 
 											cnt<=0;
 											state1<=s0;
@@ -201,7 +201,7 @@ always @(posedge clk_8Hz)
 									else 
 											begin 
 											cnt<=cnt+1;
-											buf_music1[1069:0]<=buf_music1[1069:0]<<5;
+											buf_music1[1069:0]<=buf_music1[1069:0]<<5;//ä¸€æ¬¡æ’­æ”¾ä¸€ä¸ªéŸ³é˜¶
 											end
 								default:state1<=s0;
 						endcase
@@ -235,7 +235,7 @@ always @(posedge clk_8Hz)
 				
 
 reg[10:0]Tone;
-//1MHz·ÖÆµÔ¤ÖÃÊı£¬¸úÒô·ûÏàÆ¥Åä
+//1MHzåˆ†é¢‘é¢„ç½®æ•°ï¼Œè·ŸéŸ³ç¬¦ç›¸åŒ¹é…
 parameter pre_divf={11'b11111111111,11'd137,11'd345,11'd531,11'd616,11'd773,11'd912,11'd1036,11'd1092,11'd1197,11'd1290,11'd1332,11'd1410,11'd1480,11'd1542,11'd1570,11'd1622,11'd1668,11'd1690,11'd1728,11'd1764,11'd1795};
 reg[241:0]pre_divf_buf;
 
@@ -260,7 +260,7 @@ output[7:0]ascll_out;
 		end
 endtask
 
-always@(code or flags)//Êä³öÏÔÊ¾
+always@(code or flags)//è¾“å‡ºæ˜¾ç¤º
 	begin	
 	if(type)
 		ascll(code,lcd_9);
@@ -273,26 +273,26 @@ assign light_9=lcd_9;
 
 
 
-always@(note or flags)//¸ù¾İÒô·ûµÃµ½¶ÔÓ¦µÄ·ÖÆµÊı
+always@(note or flags)//æ ¹æ®éŸ³ç¬¦å¾—åˆ°å¯¹åº”çš„åˆ†é¢‘æ•°
 	begin
 			if(type)
 			begin
 				pre_divf_buf=pre_divf;
 				pre_divf_buf=pre_divf_buf<<(note*11);
-				Tone=pre_divf_buf[241:231];//Ã¿´Î¶ÁÒ»¸öÒô·û£¨Òô·û¶ÔÓ¦11Î»Ô¤ÖÃ£©
+				Tone=pre_divf_buf[241:231];//æ¯æ¬¡è¯»ä¸€ä¸ªéŸ³ç¬¦ï¼ˆéŸ³ç¬¦å¯¹åº”11ä½é¢„ç½®ï¼‰
 			end	
 			else	
 			begin
 			pre_divf_buf=pre_divf;
 				pre_divf_buf=pre_divf_buf<<(flag*11);
-				Tone=pre_divf_buf[241:231];//Ã¿´Î¶ÁÒ»¸öÒô·û£¨Òô·û¶ÔÓ¦11Î»Ô¤ÖÃ£©
+				Tone=pre_divf_buf[241:231];//æ¯æ¬¡è¯»ä¸€ä¸ªéŸ³ç¬¦ï¼ˆéŸ³ç¬¦å¯¹åº”11ä½é¢„ç½®ï¼‰
 				end
   end
 reg PreCLK,FullSpkS;
 reg [6:0]count;
 always @(posedge clk)
 	begin		
-		PreCLK<=0;//½«CLK½øĞĞ25·ÖÆµ£¬PreCLKÎªCLKµÄ25·ÖÆµ
+		PreCLK<=0;//å°†CLKè¿›è¡Œ25åˆ†é¢‘ï¼ŒPreCLKä¸ºCLKçš„25åˆ†é¢‘
 		if(count>24)
 			begin 
 			PreCLK<=1;
@@ -305,7 +305,7 @@ always @(posedge clk)
 reg [10:0]Count11;	
 
 always@(posedge PreCLK)
-	begin//11Î»¿ÉÔ¤ÖÃ¼ÆÊıÆ÷
+	begin//11ä½å¯é¢„ç½®è®¡æ•°å™¨
 		
 		if(Count11==11'h7FF)
 			begin 
@@ -321,7 +321,7 @@ always@(posedge PreCLK)
 		
 		
 always@(posedge FullSpkS)
-	begin//½«Êä³öÔÙ2·ÖÆµ£¬Õ¹¿íÂö³å£¬Ê¹ÑïÉùÆ÷ÓĞ×ã¹»µÄ¹¦ÂÊ·¢Éù
+	begin//å°†è¾“å‡ºå†2åˆ†é¢‘ï¼Œå±•å®½è„‰å†²ï¼Œä½¿æ‰¬å£°å™¨æœ‰è¶³å¤Ÿçš„åŠŸç‡å‘å£°
 		speaker=~speaker;
 	end
 assign speakers=speaker;
